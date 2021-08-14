@@ -1,0 +1,1 @@
+docker build -t nivo/nivo-api:latest -f Dockerfile .
