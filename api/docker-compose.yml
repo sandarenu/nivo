@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+
+  nivo_http_api:
+    image: nivo/nivo-api
+    networks:
+      nivo_mesh:
+        aliases:
+          - nivo-http-api
+    restart: always
+    ports:
+      - 13030:3030
+
+networks:
+  nivo_mesh: {}

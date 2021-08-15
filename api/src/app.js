@@ -60,9 +60,28 @@ app.get('/status', (req, res) => {
     })
 })
 
-_.forOwn(mapping, ({ schema }, type) => {
+_.forOwn(mapping, ({schema}, type) => {
     app.post(`/charts/${type}`, validate(schema), (req, res) => {
-        const props = req.payload
+        const legend = {
+            legends: [
+                {
+                    anchor: 'bottom',
+                    direction: 'row',
+                    justify: false,
+                    translateX: 0,
+                    translateY: 65,
+                    itemsSpacing: 0,
+                    itemDirection: 'left-to-right',
+                    itemWidth: 80,
+                    itemHeight: 20,
+                    itemOpacity: 0.75,
+                    symbolSize: 10,
+                    symbolShape: 'circle',
+                    symbolBorderColor: 'rgba(0, 0, 0, .5)'
+                }
+            ]
+        }
+        const props = {...req.payload, ...legend}
         const id = uuid.v4()
         const url = `${req.protocol}://${req.get('host')}/r/${id}`
 
@@ -72,7 +91,7 @@ _.forOwn(mapping, ({ schema }, type) => {
             url,
         })
 
-        res.status(201).json({ id, url })
+        res.status(201).json({id, url})
     })
 })
 
@@ -81,7 +100,7 @@ app.get('/r', (req, res) => {
 })
 
 app.get('/r/:id', (req, res) => {
-    const { id } = req.params
+    const {id} = req.params
     const config = storage.get(req.params.id)
 
     if (!config) {
